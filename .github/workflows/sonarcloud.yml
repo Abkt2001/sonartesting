@@ -1,21 +1,20 @@
-name: SonarCloud Scan
-
+name: Build
 on:
   push:
     branches:
-      - main  # Adjust to your main branch name
-
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
-  sonarcloud-analysis:
-    name: SonarCloud Code Analysis
+  sonarcloud:
+    name: SonarCloud
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v1
+        uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: 3eb0252ed1dee3664ea3e2fb180939a072ba280e
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
