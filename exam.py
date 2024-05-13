@@ -13,4 +13,4 @@ def main():
         print(fibonacci(i))
 
 if __name__ == "__main__":
-    main()
+    
